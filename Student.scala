@@ -28,21 +28,24 @@ object Student{
     }
 
      def validateInput(name: String, marksStr: String, totalMarksStr: String): (Boolean, Option[String]) = {
-    if (name.isEmpty) {
-      (false, Some("Name cannot be empty"))
-    } else if (!marksStr.forall(_.isDigit)) {
-      (false, Some("Marks must be a positive integer"))
-    } else if (!totalMarksStr.forall(_.isDigit)) {
-      (false, Some("Total possible marks must be a positive integer"))
-    } else {
-      val marks = marksStr.toInt
-      val totalMarks = totalMarksStr.toInt
-      if (marks < 0 || marks > totalMarks) {
-        (false, Some("Marks must be non-negative and less than or equal to total possible marks"))
+       val nameValid = name.matches("^[a-zA-Z\\s]+$")
+       if (name.isEmpty) {
+        (false, Some("Name cannot be empty"))
+       } else if (!nameValid) {
+        (false, Some("Name must contain only letters and spaces"))
+      } else if (!marksStr.forall(_.isDigit)) {
+         (false, Some("Marks must be a positive integer"))
+      } else if (!totalMarksStr.forall(_.isDigit)) {
+         (false, Some("Total possible marks must be a positive integer"))
       } else {
-        (true, None)
+         val marks = marksStr.toInt
+         val totalMarks = totalMarksStr.toInt
+         if (marks < 0 || marks > totalMarks) {
+           (false, Some("Marks must be non-negative and less than or equal to total possible marks"))
+         } else {
+           (true, None)
+        }
       }
-    }
   }
 
     def getStudentInfoWithRetry(): (String, Int, Int, Double, Char) = {
